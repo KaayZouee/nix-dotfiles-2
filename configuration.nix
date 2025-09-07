@@ -3,6 +3,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
+# This is Kay's configuration.nix <3
+
+
 { config, pkgs, ... }:
 
 {
@@ -11,29 +14,6 @@
       ./hardware-configuration.nix
     ];
   
-
-  xdg.portal.enable = true;
-  # For flatpak.
-  xdg.portal = {
-  extraPortals = with pkgs; [
-    xdg-desktop-portal-gtk
-  ];
-};
-environment.variables = {
-  GTK_IM_MODULE = "fcitx";
-  QT_IM_MODULE = "fcitx";
-  XMODIFIERS = "@im=fcitx";
-};
-
-i18n.inputMethod = {
-  enable = true;
-  type = "fcitx5";
-  fcitx5.addons = with pkgs; [
-    fcitx5-unikey
-  ];
-};
-
-
   nix = {
     package = pkgs.nixVersions.stable; # optional, but includes latest nix features
     extraOptions = ''
@@ -41,6 +21,11 @@ i18n.inputMethod = {
     '';
   };
 
+
+
+###########################################
+###  BLUETOOTH MOUSE (MX ANYWHERE 3S)   ###
+###########################################
 
 hardware.bluetooth = {
   enable = true;
@@ -53,53 +38,17 @@ hardware.bluetooth = {
 };
 
 services.blueman.enable = true;
-
 services.ratbagd.enable = true;
-
 hardware.logitech.wireless.enable = true;
 
 
 
-
-
-
-#  programs.hyprland = {
-#    enable = true;
-#    xwayland.enable = true; # For X11 apps
-#};
-
   hardware.graphics.enable = true;
 
-
-  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
   
-
-users.groups.vboxusers = {};
-
-
-  services.power-profiles-daemon.enable = true;
-
-#i18n.inputMethod = {
-#  type = "ibus";
-#  enable = true;
-#  ibus.engines = with pkgs.ibus-engines; [
-#    bamboo
-#  ];
-#};
-
-
-
-
 #########################
 ###  VIRTUALIZATION   ###
 #########################
-
-# VirtualBox host
-#   virtualisation.virtualbox.host.enable = true;
-#
-#   users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
-
-
 
   virtualisation.libvirtd = {
     enable = true;
@@ -112,47 +61,58 @@ users.groups.vboxusers = {};
   # Optional SPICE agent for better VM interaction
   services.spice-vdagentd.enable = false;
 
+  services.power-profiles-daemon.enable = true;
 
-  programs.zsh.enable = false;
-#  programs.zsh.ohMyZsh.enable = true; # Oh My Zsh support
+
+##############################
+###  BOOTLOADER & KERNEL   ###
+##############################
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-#  boot.loader.grub.enable = true;
-#  boot.loader.grub.version = 2;
-#  boot.loader.grub.version = true;
-#  boot.loader.grub.device = "nodev";
-#  boot.loader.grub.useOSProber = true;
+
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
-  networking.hostName = "iusenixbtw"; # Define your hostname.
+##################
+###  NETWORK   ###
+##################
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-
-
-
-
-
-
   # Enable networking
   networking.networkmanager.enable = true;
   systemd.services.resolvconf.enable = false;
   networking.dhcpcd.enable = false;
 
+  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
 
-
-
-
-
+#####################################################
+###  INPUT METHODS, LANGUAGES AND TIME (BROKEN)   ###
+#####################################################
 
   # Set your time zone.
   time.timeZone = "Asia/Ho_Chi_Minh";
+
+  environment.variables = {
+    GTK_IM_MODULE = "fcitx";
+    QT_IM_MODULE = "fcitx";
+    XMODIFIERS = "@im=fcitx";
+  };
+
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-unikey
+    ];
+  };
+
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -168,6 +128,7 @@ users.groups.vboxusers = {};
     LC_TIME = "vi_VN";
   };
 
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -178,16 +139,16 @@ users.groups.vboxusers = {};
   #keyboard backlit (asus vivobook laptop)
   boot.kernelModules = [ "asus-nb-wmi" ];
 
+################
+###  SHELL   ###
+################
 
+    programs.zsh.enable = false;
+    programs.fish.enable = true; #Fish is default shell
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
+###############
+###  AUDIO  ###
+###############
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -199,56 +160,66 @@ users.groups.vboxusers = {};
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
+    };
+################
+###  FONTS   ###
+################
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+  fonts = {
+    fontconfig.enable = true;
+    packages = with pkgs; [
+      nerd-fonts.meslo-lg
+      noto-fonts
+      noto-fonts-emoji
+      nerd-fonts.fira-code
+      fira-code
+      fira
+      font-awesome
+    ];
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-#   services.xserver.libinput.enable = true;
+##################
+###  FLATPAK   ###
+##################
 
+  xdg.portal.enable = true;
+  # For flatpak.
+  xdg.portal = {
+    extraPortals = with pkgs; [
+      xdg-desktop-portal-gtk
+    ];
+  };
+
+  services.flatpak.enable = true;
+
+#################
+###  FIREFOX  ###
+#################
+
+  programs.firefox.enable = true;
+
+
+##############
+###  USER  ###
+##############
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kay = {
     isNormalUser = true;
     description = "kay";
-    extraGroups = [ "networkmanager" "wheel" "vboxusers" "libvirtd" ];
-    shell = pkgs.fish;    
-    packages = with pkgs; [
-    #  thunderbird
-    ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" ];
+    shell = pkgs.fish;
   };
-       programs.fish.enable = true;
 
-#fonts.packages = with pkgs; [
-#  nerd-fonts.fira-code
-#  fira-code
-#  fira
-#  font-awesome
-#];
+###################
+###  HOSTNAME   ###
+###################
 
+  networking.hostName = "iusenixbtw";
 
-fonts = {
-  fontconfig.enable = true;
-  packages = with pkgs; [
-    nerd-fonts.meslo-lg
-    noto-fonts
-    noto-fonts-emoji
-    nerd-fonts.fira-code
-    fira-code
-    fira
-    font-awesome
-
-  ];
-};
-
-
-services.flatpak.enable = true;
-
-
-  # Install firefox.
-  programs.firefox.enable = true;
+##############################
+###  SYSTEM-WIDE PACKAGES  ###
+##############################
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -275,11 +246,6 @@ services.flatpak.enable = true;
     protonvpn-gui
     wl-clipboard
     cliphist
-#    bluez
-#    inotify-tools
-#    trash-cli
-#    foot
-#    socat
     imagemagick
     nodejs
     fd
@@ -291,13 +257,6 @@ services.flatpak.enable = true;
     pkgs.fastfetch
     btop
     cava
-#    waybar
-#    
-#hyprland
-#    hyprpaper
-#    hyprlock
-#    wofi
-#    rofi-wayland
     dunst
     xfce.thunar
     jq
@@ -305,11 +264,6 @@ services.flatpak.enable = true;
     mako
     grim slurp
     wl-clipboard
-#    xdg-desktop-portal-hyprland
-#    xdg-desktop-portal-gtk
-#    hyprpicker
-#    hypridle    
-#    kitty
     networkmanagerapplet
     brightnessctl
     pipewire
@@ -340,6 +294,32 @@ services.flatpak.enable = true;
     lua51Packages.lua
 
   ];
+
+
+#######################
+###  OTHER STUFFS   ###
+#######################
+
+  # Configure keymap in X11
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
+  };
+
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
+
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
+
+  # Enable touchpad support (enabled default in most desktopManager).
+#   services.xserver.libinput.enable = true;
+
+
+
+
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
