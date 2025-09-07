@@ -6,12 +6,8 @@
 
 ## Updates:
 - **1.1.0**: Added *flake.nix*, also updated configuration.nix (changed the default shell to fish instead of zsh).
-- **1.1.1**: Edited *README.md*
-- **1.1.2**: Edited *README.md* (2nd time)
-- **1.1.3**: Edited *README.md* (3rd time)
-- **1.1.4**: Edited *README.md* (4th time)
 - **1.2.0**: Edited *README.md*
-> Notes:  From now on, any minor changes of README.md won't be updated in "Updates" section.
+> Notes:  From now on, minor changes to README.md won’t be tracked in the Updates section.
 
 ## ⚙️ About These Files
 
@@ -37,3 +33,6 @@ These are safe to share and can be reused on other machines (with minor adjustme
 **Quick rule of thumb:**
 If it defines *how I want my system to look/work*, it’s a dotfile.
 If it defines *the machine’s unique hardware setup*, it’s not portable.
+
+> Note: If you prefer, you can add `hardware-configuration.nix` to `.gitignore` so it won’t show up in commits.
+
