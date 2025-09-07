@@ -6,11 +6,10 @@
 
 ## Updates:
 - **1.1.0**: Added *flake.nix*, also updated configuration.nix (changed the default shell to fish instead of zsh).
-- **1.2.0**: Edited *README.md*
+- **1.2.0**: Edited *README.md and make configuration.nix more visual appealing.*
 > Notes:  From now on, minor changes to README.md won’t be tracked in the Updates section.
 
-## ⚙️ About These Files
-
+## ⚙️ About These Files:
 This repo contains my **NixOS dotfiles** — system configuration managed with Nix flakes.
 
 ### ✅ Portable (can be reused anywhere)
