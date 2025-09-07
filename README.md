@@ -10,7 +10,7 @@
 - **1.1.2**: Edited *README.md* (2nd time)
 - **1.1.3**: Edited *README.md* (3rd time)
 - **1.1.4**: Edited *README.md* (4th time)
-  **1.2.0**: Edited *README.md*
+- **1.2.0**: Edited *README.md*
 > Notes:  From now on, any minor changes of README.md won't be updated in "Updates" section.
 
 ## ⚙️ About These Files
