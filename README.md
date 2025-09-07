@@ -1,11 +1,16 @@
                                                                                                                               
                                                                                                                               
 # NixOS Dotfiles
+<<<<<<< HEAD
 - **Version 1.1.4**.
 - **Maintainer / Contributor**: KaayZouee.
 
 # Notes:
 > From now on, any minor changes of README.md won't be updated in "#Updates".
+=======
+- *Version 1.1.3*.
+- *Maintainer / Contributor*: KaayZouee.
+>>>>>>> 1ee35341f260ca013cea6a28bf96a6fa7d4ef706
 
 # Updates:
 - **1.1.0**: Added *flake.nix*, also updated configuration.nix (changed the default shell to fish instead of zsh).
