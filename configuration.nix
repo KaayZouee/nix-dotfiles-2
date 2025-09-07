@@ -113,7 +113,7 @@ users.groups.vboxusers = {};
   services.spice-vdagentd.enable = false;
 
 
-  programs.zsh.enable = true;
+  programs.zsh.enable = false;
 #  programs.zsh.ohMyZsh.enable = true; # Oh My Zsh support
 
   # Bootloader.
@@ -214,11 +214,12 @@ users.groups.vboxusers = {};
     isNormalUser = true;
     description = "kay";
     extraGroups = [ "networkmanager" "wheel" "vboxusers" "libvirtd" ];
-    shell = pkgs.zsh;    
+    shell = pkgs.fish;    
     packages = with pkgs; [
     #  thunderbird
     ];
   };
+       programs.fish.enable = true;
 
 #fonts.packages = with pkgs; [
 #  nerd-fonts.fira-code
