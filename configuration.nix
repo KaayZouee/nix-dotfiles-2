@@ -285,6 +285,7 @@ hardware.logitech.wireless.enable = true;
     memos
     kiwix
     xclip
+    pdf4qt
     ast-grep
     lazygit
     fzf
