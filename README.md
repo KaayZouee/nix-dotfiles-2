@@ -33,5 +33,4 @@ These are safe to share and can be reused on other machines (with minor adjustme
 If it defines *how I want my system to look/work*, it’s a dotfile.
 If it defines *the machine’s unique hardware setup*, it’s not portable.
 
-> Note: If you prefer, you can add `hardware-configuration.nix` to `.gitignore` so it won’t show up in commits.
-
+> Note: I'm planning to move from classic configuration.nix to flake.nix, not sure if that's a good choice or not. Only small updates from now on.
