@@ -1,4 +1,3 @@
-
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
@@ -6,7 +5,7 @@
 # This is Kay's configuration.nix <3
 
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -50,18 +49,8 @@ hardware.logitech.wireless.enable = true;
 ###  VIRTUALIZATION   ###
 #########################
 
-  virtualisation.libvirtd = {
-    enable = true;
-    qemu = {
-      swtpm.enable = true;     # Optional: TPM support
-      ovmf.enable = true;      # UEFI support
-    };
-  };
-
-  # Optional SPICE agent for better VM interaction
-  services.spice-vdagentd.enable = false;
-
-  services.power-profiles-daemon.enable = true;
+virtualisation.libvirtd.enable = true;
+programs.virt-manager.enable = true;
 
 
 ##############################
@@ -75,22 +64,28 @@ hardware.logitech.wireless.enable = true;
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+
+############################
+###  /etc/resolv.conf   ###
+############################
+
+
+
 ##################
 ###  NETWORK   ###
 ##################
 
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+networking.networkmanager.enable = true;
+networking.networkmanager.dns = "none";
 
-  # Enable networking
-  networking.networkmanager.enable = true;
-  systemd.services.resolvconf.enable = false;
-  networking.dhcpcd.enable = false;
+services.resolved.enable = false;
 
-  networking.nameservers = [ "1.1.1.1" "8.8.8.8" ];
+environment.etc."resolv.conf".text = ''
+  nameserver 1.1.1.1
+  nameserver 8.8.8.8
+'';
+
 
 #####################################################
 ###  INPUT METHODS, LANGUAGES AND TIME (BROKEN)   ###
@@ -109,7 +104,7 @@ hardware.logitech.wireless.enable = true;
     enable = true;
     type = "fcitx5";
     fcitx5.addons = with pkgs; [
-      fcitx5-unikey
+    kdePackages.fcitx5-unikey
     ];
   };
 
@@ -143,7 +138,6 @@ hardware.logitech.wireless.enable = true;
 ###  SHELL   ###
 ################
 
-    programs.zsh.enable = false;
     programs.fish.enable = true; #Fish is default shell
 
 ###############
@@ -170,7 +164,7 @@ hardware.logitech.wireless.enable = true;
     packages = with pkgs; [
       nerd-fonts.meslo-lg
       noto-fonts
-      noto-fonts-emoji
+      noto-fonts-color-emoji
       nerd-fonts.fira-code
       fira-code
       fira
@@ -230,9 +224,7 @@ hardware.logitech.wireless.enable = true;
     neovim
     vscodium
     fcitx5
-    fcitx5-configtool
-    fcitx5-unikey
-    pkgs.libsForQt5.fcitx5-unikey
+    kdePackages.fcitx5-unikey
     vim-full
     curl
     fish
@@ -242,42 +234,30 @@ hardware.logitech.wireless.enable = true;
     ripgrep
     sqlite
     gcc
-    xclip
     protonvpn-gui
     wl-clipboard
     cliphist
     imagemagick
     nodejs
-    fd
     wget
     stow
     git
-    blueman
-    piper
     pkgs.fastfetch
     btop
     cava
     dunst
     xfce.thunar
     jq
-    wireplumber
     mako
     grim slurp
-    wl-clipboard
     networkmanagerapplet
     brightnessctl
-    pipewire
-    pavucontrol
-    noto-fonts noto-fonts-emoji
-    fontconfig
     spotify
     unzip
     adwaita-icon-theme
     fuchsia-cursor
     wine
     flatpak
-    zsh
-    qemu
     virt-manager
     virt-viewer
     swtpm
@@ -347,6 +327,6 @@ hardware.logitech.wireless.enable = true;
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.11"; # Did you read the comment?
 
 }
